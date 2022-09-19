@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.*;
 
 /**
@@ -141,7 +142,14 @@ public class SwerveModule {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getTurnEncoder()));
     // Calculate the drive output from the drive PID controller.
-    final double driveOutput = m_drivePIDController.calculate(m_driveEncoder.getVelocity(), state.speedMetersPerSecond);
+    double speed = m_driveEncoder.getVelocity();
+
+    final double driveOutput = m_drivePIDController.calculate(speed, state.speedMetersPerSecond);
+
+    SmartDashboard.putNumber("Module " + moduleID + " Speed", speed);
+    SmartDashboard.putNumber("Module " + moduleID + " Desired Speed", state.speedMetersPerSecond);
+    SmartDashboard.putNumber("Module " + moduleID + " Error%", (speed-state.speedMetersPerSecond)/state.speedMetersPerSecond*100.0);
+
     // Calculates the desired feedForward motor % from the current desired velocity
     // and the static and feedforward gains
     final double driveFF = driveFeedForward.calculate(state.speedMetersPerSecond);

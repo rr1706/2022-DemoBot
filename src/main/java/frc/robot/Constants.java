@@ -25,25 +25,25 @@ public final class Constants {
    * Static method containing all Drivetrain constants
    */
   public static final class DriveConstants {
-    public static final int kFrontLeftDriveMotorPort = 1; // CANID of the Translation SparkMAX
-    public static final int kFrontRightDriveMotorPort = 3; // CANID of the Translation SparkMAX
-    public static final int kBackLeftDriveMotorPort = 5; // CANID of the Translation SparkMAX
-    public static final int kBackRightDriveMotorPort = 7; // CANID of the Translation SparkMAX
+    public static final int kFrontLeftDriveMotorPort = 3; // CANID of the Translation SparkMAX
+    public static final int kFrontRightDriveMotorPort = 7; // CANID of the Translation SparkMAX
+    public static final int kBackLeftDriveMotorPort = 1; // CANID of the Translation SparkMAX
+    public static final int kBackRightDriveMotorPort = 5; // CANID of the Translation SparkMAX
 
-    public static final int kFrontLeftTurningMotorPort = 2; // CANID of the Rotation SparkMAX
-    public static final int kFrontRightTurningMotorPort = 4; // CANID of the Rotation SparkMAX
-    public static final int kBackLeftTurningMotorPort = 6; // CANID of the Rotation SparkMAX
-    public static final int kBackRightTurningMotorPort = 8; // CANID of the Rotation SparkMAX
+    public static final int kFrontLeftTurningMotorPort = 4; // CANID of the Rotation SparkMAX
+    public static final int kFrontRightTurningMotorPort = 8; // CANID of the Rotation SparkMAX
+    public static final int kBackLeftTurningMotorPort = 2; // CANID of the Rotation SparkMAX
+    public static final int kBackRightTurningMotorPort = 6; // CANID of the Rotation SparkMAX
 
-    public static final int kFrontLeftTurningEncoderPort = 0; // Analog Port of the Module Absolute Encoder
-    public static final int kFrontRightTurningEncoderPort = 1; // Analog Port of the Module Absolute Encoder
-    public static final int kBackLeftTurningEncoderPort = 2; // Analog Port of the Module Absolute Encoder
-    public static final int kBackRightTurningEncoderPort = 3; // Analog Port of the Module Absolute Encoder
+    public static final int kFrontLeftTurningEncoderPort = 1; // Analog Port of the Module Absolute Encoder
+    public static final int kFrontRightTurningEncoderPort = 3; // Analog Port of the Module Absolute Encoder
+    public static final int kBackLeftTurningEncoderPort = 0; // Analog Port of the Module Absolute Encoder
+    public static final int kBackRightTurningEncoderPort = 2; // Analog Port of the Module Absolute Encoder
 
-    public static final double kFrontLeftOffset = 0.0; // Encoder Offset in Radians
-    public static final double kFrontRightOffset = 0.0; // Encoder Offset in Radians
-    public static final double kBackLeftOffset = 0.0; // Encoder Offset in Radians
-    public static final double kBackRightOffset = 0.0; // Encoder Offset in Radians
+    public static final double kFrontLeftOffset = -0.947+Math.PI; // Encoder Offset in Radians
+    public static final double kFrontRightOffset = -0.772; // Encoder Offset in Radians
+    public static final double kBackLeftOffset = -5.671+Math.PI; // Encoder Offset in Radians
+    public static final double kBackRightOffset = -5.036; // Encoder Offset in Radians
 
     // Drive motor PID is best done on the roboRIO currently as the SparkMAX does
     // not allow for static gain values on the PID controller,
@@ -57,16 +57,16 @@ public final class Constants {
     // public static final double[] kBackRightTuningVals = {0.0108,0.2828,0.25,3};
     // //{Static Gain, FeedForward, Proportional Gain, ModuleID for Tuning}
 
-    public static final double[] kFrontLeftTuningVals = { 0.0150, 0.2850, 0.25, 0 }; // {Static Gain, FeedForward,
+    public static final double[] kFrontLeftTuningVals = { 0.0150*0.5, 0.2850*0.97, 0.15, 0 }; // {Static Gain, FeedForward,
                                                                                      // Proportional Gain, ModuleID for
                                                                                      // Tuning}
-    public static final double[] kFrontRightTuningVals = { 0.0150, 0.2850, 0.25, 1 }; // {Static Gain, FeedForward,
+    public static final double[] kFrontRightTuningVals = { 0.0150*0.5, 0.2850*0.97, 0.1, 1 }; // {Static Gain, FeedForward,
                                                                                       // Proportional Gain, ModuleID for
                                                                                       // Tuning}
-    public static final double[] kBackLeftTuningVals = { 0.0150, 0.2850, 0.25, 2 }; // {Static Gain, FeedForward,
+    public static final double[] kBackLeftTuningVals = { 0.0150*0.5, 0.2850*0.97, 0.15, 2 }; // {Static Gain, FeedForward,
                                                                                     // Proportional Gain, ModuleID for
                                                                                     // Tuning}
-    public static final double[] kBackRightTuningVals = { 0.0150, 0.2850, 0.25, 3 }; // {Static Gain, FeedForward,
+    public static final double[] kBackRightTuningVals = { 0.0150*0.5, 0.2850*0.97, 0.15, 3 }; // {Static Gain, FeedForward,
                                                                                      // Proportional Gain, ModuleID for
                                                                                      // Tuning}
 
@@ -89,10 +89,10 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSecond = 3.25; // Maximum Sustainable Drivetrain Speed under Normal
                                                                 // Conditions & Battery, Robot will not exceed this
                                                                 // speed in closed loop control
-    public static final double kMaxAngularSpeed = Math.PI; // Maximum Angular Speed desired. NOTE: Robot can exceed this
+    public static final double kMaxAngularSpeed = 1.5*Math.PI; // Maximum Angular Speed desired. NOTE: Robot can exceed this
                                                            // but spinning fast is not particularly useful or driver
                                                            // friendly
-    public static final double kMaxAngularAccel = Math.PI; // Maximum Angular Speed desired. NOTE: Robot can exceed this
+    public static final double kMaxAngularAccel = 1.5*Math.PI; // Maximum Angular Speed desired. NOTE: Robot can exceed this
                                                            // but spinning fast is not particularly useful or driver
                                                            // friendly
 
@@ -101,8 +101,8 @@ public final class Constants {
     public static final double kOuterDeadband = 0.98; // This value should be lower than the analog stick X or Y reading
                                                       // when aimed at a 45deg angle (Such that X and Y are are
                                                       // maximized simultaneously)
-    public static final double kTranslationSlew = 3.00;
-    public static final double kRotationSlew = 3.00;
+    public static final double kTranslationSlew = 1.750;
+    public static final double kRotationSlew = 3.75;
 
     // Minimum allowable rotation command (in radians/s) assuming user input is
     // squared using quadraticTransform, this value is always positive and should be
@@ -185,10 +185,10 @@ public final class Constants {
     public static final double kMaxAcceleration = 2.50;
     public static final double kMaxSpeed = 3.25; // Maximum Sustainable Drivetrain Speed under Normal Conditions &
                                                  // Battery, Robot will not exceed this speed in closed loop control
-    public static final double kMaxAngularSpeed = Math.PI; // Maximum Angular Speed desired. NOTE: Robot can exceed this
+    public static final double kMaxAngularSpeed = 1.25*Math.PI; // Maximum Angular Speed desired. NOTE: Robot can exceed this
                                                            // but spinning fast is not particularly useful or driver
                                                            // friendly
-    public static final double kMaxAngularAccel = Math.PI; // Maximum Angular Speed desired. NOTE: Robot can exceed this
+    public static final double kMaxAngularAccel = 1.25*Math.PI; // Maximum Angular Speed desired. NOTE: Robot can exceed this
                                                            // but spinning fast is not particularly useful or driver
                                                            // friendly
     public static final double kPXController = 3.0;

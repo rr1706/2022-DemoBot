@@ -59,10 +59,8 @@ public class RobotContainer {
     new POVButton(m_controller, 0)
         .whenPressed(() -> m_drive.resetOdometry(new Rotation2d(0.0)));
 
-    new JoystickButton(m_controller, Button.kA.value).whenPressed(m_runShooter);
-    new JoystickButton(m_controller, Button.kB.value).whenPressed(()->m_runShooter.cancel());
-
-    new JoystickAnalogButton(m_controller, Side.kLeft).whileHeld(m_feedShooter);
+    new JoystickAnalogButton(m_controller, Side.kLeft).whileHeld(m_runShooter);
+    new JoystickAnalogButton(m_controller, Side.kRight).whileHeld(m_feedShooter);
   }
 
   /**

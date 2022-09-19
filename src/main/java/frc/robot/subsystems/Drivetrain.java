@@ -258,7 +258,7 @@ public class Drivetrain extends SubsystemBase {
    * @param rot    is the input drive rotation speed command
    */
   private double performKeepAngle(double xSpeed, double ySpeed, double rot) {
-    double output = rot; // Output shouold be set to the input rot command unless the Keep Angle PID is
+    double output = rot; // Output should be set to the input rot command unless the Keep Angle PID is
                          // called
     if (Math.abs(rot) >= DriveConstants.kMinRotationCommand) { // If the driver commands the robot to rotate set the
                                                                // last rotate time to the current time

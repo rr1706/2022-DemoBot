@@ -27,14 +27,14 @@ public class RunShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("Shooter Power", 0.5);
-    m_shooter.set(0.5);
+    SmartDashboard.putNumber("Shooter Power", 0.95);
+    m_shooter.set(0.95);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double power = SmartDashboard.getNumber("Shooter Power", 0.5);
+    double power = SmartDashboard.getNumber("Shooter Power", 0.95);
 
     if(power <=0.0){
       power = 0.0;

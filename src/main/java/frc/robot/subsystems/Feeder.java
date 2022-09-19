@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.GlobalConstants;
@@ -17,6 +18,8 @@ public class Feeder extends SubsystemBase {
   public Feeder() {
     m_motor.configVoltageCompSaturation(GlobalConstants.kVoltCompensation);
     m_motor.enableVoltageCompensation(true);
+    m_motor.setInverted(true);
+    m_motor.setNeutralMode(NeutralMode.Brake);
   }
 
   public void set(double power){
