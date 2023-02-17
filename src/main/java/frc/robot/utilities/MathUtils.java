@@ -32,6 +32,11 @@ public class MathUtils {
     return Math.signum(input) * Math.pow(input, 2);
   }
 
+  public static double cubicLinear(double input, double a, double b){
+    return (a*Math.pow(input, 3)+b*input);
+  }
+
+
   /**
    * Applies a simple deadband to input values between -1.0 and 1.0. Makes use of
    * the deadband constants stored in the constants

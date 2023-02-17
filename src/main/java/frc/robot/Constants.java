@@ -10,8 +10,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 public final class Constants {
 
   public static final class CurrentLimit {
-    public static final int kTranslation = 30;
-    public static final int kRotation = 25;
+    public static final int kTranslation = 50;
+    public static final int kRotation = 30;
   }
 
   public static final class GoalConstants {
@@ -35,15 +35,15 @@ public final class Constants {
     public static final int kBackLeftTurningMotorPort = 2; // CANID of the Rotation SparkMAX
     public static final int kBackRightTurningMotorPort = 6; // CANID of the Rotation SparkMAX
 
-    public static final int kFrontLeftTurningEncoderPort = 1; // Analog Port of the Module Absolute Encoder
-    public static final int kFrontRightTurningEncoderPort = 3; // Analog Port of the Module Absolute Encoder
-    public static final int kBackLeftTurningEncoderPort = 0; // Analog Port of the Module Absolute Encoder
-    public static final int kBackRightTurningEncoderPort = 2; // Analog Port of the Module Absolute Encoder
+    public static final int kFrontLeftTurningEncoderPort = 6; // Analog Port of the Module Absolute Encoder
+    public static final int kFrontRightTurningEncoderPort = 7; // Analog Port of the Module Absolute Encoder
+    public static final int kBackLeftTurningEncoderPort = 4; // Analog Port of the Module Absolute Encoder
+    public static final int kBackRightTurningEncoderPort = 5; // Analog Port of the Module Absolute Encoder
 
-    public static final double kFrontLeftOffset = -0.947+Math.PI; // Encoder Offset in Radians
-    public static final double kFrontRightOffset = -0.772; // Encoder Offset in Radians
-    public static final double kBackLeftOffset = -5.671+Math.PI; // Encoder Offset in Radians
-    public static final double kBackRightOffset = -5.036; // Encoder Offset in Radians
+    public static final double kFrontLeftOffset = -0.954-2.949+0.121; // Encoder Offset in Radians
+    public static final double kFrontRightOffset = -2.857-3.339; // Encoder Offset in Radians
+    public static final double kBackLeftOffset = 2.784-8.335; // Encoder Offset in Radians
+    public static final double kBackRightOffset = -0.967-2.403; // Encoder Offset in Radians
 
     // Drive motor PID is best done on the roboRIO currently as the SparkMAX does
     // not allow for static gain values on the PID controller,
@@ -86,7 +86,7 @@ public final class Constants {
         new Translation2d(-kWheelBaseLength / 2, -kWheelBaseWidth / 2));
 
     public static final double kMaxAcceleration = 3.0;
-    public static final double kMaxSpeedMetersPerSecond = 3.25; // Maximum Sustainable Drivetrain Speed under Normal
+    public static final double kMaxSpeedMetersPerSecond = 3.25*1.333*1.204; // Maximum Sustainable Drivetrain Speed under Normal
                                                                 // Conditions & Battery, Robot will not exceed this
                                                                 // speed in closed loop control
     public static final double kMaxAngularSpeed = 1.5*Math.PI; // Maximum Angular Speed desired. NOTE: Robot can exceed this
@@ -101,7 +101,7 @@ public final class Constants {
     public static final double kOuterDeadband = 0.98; // This value should be lower than the analog stick X or Y reading
                                                       // when aimed at a 45deg angle (Such that X and Y are are
                                                       // maximized simultaneously)
-    public static final double kTranslationSlew = 1.750;
+    public static final double kTranslationSlew = 1.500;
     public static final double kRotationSlew = 3.75;
 
     // Minimum allowable rotation command (in radians/s) assuming user input is
@@ -123,9 +123,9 @@ public final class Constants {
    * Static method containing all Swerve Module constants
    */
   public static final class ModuleConstants {
-    public static final double kTranslationRampRate = 3.0; // Units of %power/s, ie 4.0 means it takes 0.25s to reach
+    public static final double kTranslationRampRate = 4.0; // Units of %power/s, ie 4.0 means it takes 0.25s to reach
                                                            // 100% power from 0%
-    private static final double kTranslationGearRatio = 8.33333333; // Overall gear ratio of the swerve module
+    private static final double kTranslationGearRatio = 8.33333333*0.750*0.830769231; // Overall gear ratio of the swerve module
     private static final double kWheelDiameter = 0.0942; // Wheel Diameter in meters, may need to be
                                                                          // experimentally determined due to compliance
                                                                          // of floor/tread material

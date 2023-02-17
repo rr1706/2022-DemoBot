@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -36,6 +37,10 @@ public class Drivetrain extends SubsystemBase {
   private double lastDriveTime = 0.0; // Double to store the time of the last translation command
 
   private final Timer keepAngleTimer = new Timer(); // Creates timer used in the perform keep angle function
+
+  private final SlewRateLimiter m_slewX = new SlewRateLimiter(7.5);
+  private final SlewRateLimiter m_slewY = new SlewRateLimiter(7.5);
+  private final SlewRateLimiter m_slewRot = new SlewRateLimiter(12.5);
 
   // Creates a swerveModule object for the front left swerve module feeding in
   // parameters from the constants file
@@ -92,9 +97,15 @@ public class Drivetrain extends SubsystemBase {
    *                      field.
    */
   @SuppressWarnings("ParameterName")
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    rot = performKeepAngle(xSpeed, ySpeed, rot); // Calls the keep angle function to update the keep angle or rotate
-                                                 // depending on driver input
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean keepAngle) {
+
+    if(keepAngle){
+      rot = performKeepAngle(xSpeed,ySpeed,rot); //Calls the keep angle function to update the keep angle or rotate depending on driver input
+    }
+    
+    xSpeed = m_slewX.calculate(xSpeed);
+    ySpeed = m_slewY.calculate(ySpeed);
+    rot = m_slewRot.calculate(rot);
 
     // SmartDashboard.putNumber("xSpeed Commanded", xSpeed);
     // SmartDashboard.putNumber("ySpeed Commanded", ySpeed);
@@ -114,6 +125,13 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    double xSpeed = getChassisSpeed().vxMetersPerSecond;
+    double ySpeed = getChassisSpeed().vyMetersPerSecond;
+
+    double speed = Math.sqrt(xSpeed*xSpeed+ySpeed*ySpeed);
+
+    SmartDashboard.putNumber("Speed", speed);
 
     // SmartDashboard.putNumber("Accel X", m_fieldRelAccel.ax);
     // SmartDashboard.putNumber("Accel Y", m_fieldRelAccel.ay);

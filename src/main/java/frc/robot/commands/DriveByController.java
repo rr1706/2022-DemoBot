@@ -4,6 +4,8 @@ import frc.robot.Constants.*;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utilities.MathUtils;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -14,10 +16,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DriveByController extends CommandBase {
   private final Drivetrain m_robotDrive;
   private final XboxController m_controller;
-
-  private final SlewRateLimiter m_slewX = new SlewRateLimiter(DriveConstants.kTranslationSlew);
-  private final SlewRateLimiter m_slewY = new SlewRateLimiter(DriveConstants.kTranslationSlew);
-  private final SlewRateLimiter m_slewRot = new SlewRateLimiter(DriveConstants.kRotationSlew);
 
   private boolean fieldOrient = true;
 
@@ -43,7 +41,27 @@ public class DriveByController extends CommandBase {
    */
   @Override
   public void execute() {
-    m_robotDrive.drive(m_slewX.calculate(
+
+    double maxLinear = DriveConstants.kMaxSpeedMetersPerSecond;
+    double desiredX = -inputTransform(1.0*m_controller.getLeftY())*maxLinear;
+    double desiredY = -inputTransform(m_controller.getLeftX())*maxLinear;
+    Translation2d desiredTranslation = new Translation2d(desiredX, desiredY);
+    double desiredMag = desiredTranslation.getDistance(new Translation2d());
+
+    double desiredRot = -inputTransform(m_controller.getRightX())* DriveConstants.kMaxAngularSpeed;
+
+
+    if(desiredMag >= maxLinear){
+      desiredTranslation = desiredTranslation.times(maxLinear/desiredMag);
+    }
+
+    Translation2d rotAdj= desiredTranslation.rotateBy(new Rotation2d(-Math.PI/2.0)).times(desiredRot*0.05);
+
+    desiredTranslation = desiredTranslation.plus(rotAdj);
+
+    m_robotDrive.drive(desiredTranslation.getX(), desiredTranslation.getY(),desiredRot,true,true);
+
+/*     m_robotDrive.drive(m_slewX.calculate(
         -inputTransform(m_controller.getLeftY()))
         * DriveConstants.kMaxSpeedMetersPerSecond,
         m_slewY.calculate(
@@ -51,7 +69,7 @@ public class DriveByController extends CommandBase {
             * DriveConstants.kMaxSpeedMetersPerSecond,
         m_slewRot.calculate(-inputTransform(m_controller.getRightX()))
             * DriveConstants.kMaxAngularSpeed,
-        fieldOrient);
+        fieldOrient); */
 
         SmartDashboard.putBoolean("DrivingByController", true);
   }
@@ -77,20 +95,9 @@ public class DriveByController extends CommandBase {
     }
   }
 
-  /**
-   * This function takes the user input from the controller analog sticks, applys
-   * a deadband and then quadratically
-   * transforms the input so that it is easier for the user to drive, this is
-   * especially important on high torque motors
-   * such as the NEOs or Falcons as it makes it more intuitive and easier to make
-   * small corrections
-   * 
-   * @param input is the input value from the controller axis, should be a value
-   *              between -1.0 and 1.0
-   * @return the transformed input value
-   */
-  private double inputTransform(double input) {
-    return MathUtils.singedSquare(MathUtils.applyDeadband(input));
+  private double inputTransform(double input){
+    //return MathUtils.singedSquare(MathUtils.applyDeadband(input));
+    return MathUtils.cubicLinear(MathUtils.applyDeadband(input), 0.95, 0.05);
   }
 
 }
